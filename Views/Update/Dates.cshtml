@@ -1,0 +1,122 @@
+@{
+    ViewData["Title"] = "Cập nhật ngày tháng";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        Cập nhật ngày tháng trong hệ thống
+                    </h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="alert @(ViewBag.Success == true ? "alert-success" : "alert-danger")" role="alert">
+                            @ViewBag.Message
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <h5><i class="fas fa-info-circle me-2"></i>Thông tin cập nhật</h5>
+                            <p>Chức năng này sẽ cập nhật tất cả các ngày trong hệ thống từ <strong>1 tháng 9 năm 2025</strong> đến <strong>21 tháng 9 năm 2025</strong>.</p>
+                            
+                            <h6>Dữ liệu được cập nhật:</h6>
+                            <ul>
+                                <li><strong>Người dùng:</strong> Ngày tạo và đăng nhập cuối</li>
+                                <li><strong>Sản phẩm:</strong> Ngày tạo và cập nhật</li>
+                                <li><strong>Đơn hàng:</strong> Tạo lại tất cả đơn hàng với ngày mới</li>
+                                <li><strong>Đánh giá:</strong> Ngày tạo đánh giá</li>
+                            </ul>
+                            
+                            <div class="alert alert-warning mt-3">
+                                <strong>⚠️ Cảnh báo:</strong> Thao tác này sẽ xóa tất cả đơn hàng hiện tại và tạo lại với dữ liệu mới.
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="@Url.Action("Dates", "Update")" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sync-alt me-2"></i>
+                                Bắt đầu cập nhật
+                            </a>
+                        </div>
+                    }
+                    
+                    @if (ViewBag.Success == true)
+                    {
+                        <div class="mt-4">
+                            <h5>Kiểm tra kết quả:</h5>
+                            <div class="d-grid gap-2">
+                                <a href="/Admin" class="btn btn-success">
+                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    Xem Dashboard Admin
+                                </a>
+                                <a href="/Admin/Orders" class="btn btn-info">
+                                    <i class="fas fa-shopping-cart me-2"></i>
+                                    Xem danh sách đơn hàng
+                                </a>
+                                <a href="/Admin/Users" class="btn btn-secondary">
+                                    <i class="fas fa-users me-2"></i>
+                                    Xem danh sách người dùng
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-muted">
+                    <small>
+                        <i class="fas fa-clock me-1"></i>
+                        Thời gian cập nhật: Từ 1/9/2025 đến 21/9/2025
+                    </small>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="fas fa-home me-2"></i>
+                    Về trang chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+    
+    .card-header {
+        border-bottom: none;
+    }
+    
+    .btn-lg {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+    }
+    
+    .alert {
+        border-left: 4px solid;
+    }
+    
+    .alert-success {
+        border-left-color: #28a745;
+    }
+    
+    .alert-danger {
+        border-left-color: #dc3545;
+    }
+    
+    .alert-info {
+        border-left-color: #17a2b8;
+    }
+    
+    .alert-warning {
+        border-left-color: #ffc107;
+    }
+</style>

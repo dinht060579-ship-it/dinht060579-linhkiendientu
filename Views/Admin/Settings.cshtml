@@ -1,0 +1,234 @@
+@model ElectronicsStore.ViewModels.AdminSettingsViewModel
+@{
+    ViewData["Title"] = "Cài Đặt Hệ Thống";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-cogs me-2"></i>Cài Đặt Hệ Thống
+                    </h4>
+                </div>
+                
+                <div class="card-body">
+                    <form method="post" action="@Url.Action("UpdateSettings", "Admin")">
+                        @Html.AntiForgeryToken()
+                        
+                        <!-- Website Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-globe me-2"></i>Thông Tin Website
+                                </h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="SiteName" class="form-label"></label>
+                                    <input asp-for="SiteName" class="form-control" />
+                                    <span asp-validation-for="SiteName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="ContactEmail" class="form-label"></label>
+                                    <input asp-for="ContactEmail" class="form-control" />
+                                    <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label asp-for="SiteDescription" class="form-label"></label>
+                                    <textarea asp-for="SiteDescription" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="SiteDescription" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-address-book me-2"></i>Thông Tin Liên Hệ
+                                </h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="ContactPhone" class="form-label"></label>
+                                    <input asp-for="ContactPhone" class="form-control" />
+                                    <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Address" class="form-label"></label>
+                                    <input asp-for="Address" class="form-control" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Settings -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-users-cog me-2"></i>Cài Đặt Người Dùng
+                                </h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3 form-check">
+                                    <input asp-for="AllowRegistration" class="form-check-input" />
+                                    <label asp-for="AllowRegistration" class="form-check-label"></label>
+                                    <div class="form-text">Cho phép người dùng mới đăng ký tài khoản</div>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input asp-for="RequireEmailConfirmation" class="form-check-input" />
+                                    <label asp-for="RequireEmailConfirmation" class="form-check-label"></label>
+                                    <div class="form-text">Yêu cầu xác nhận email khi đăng ký</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3 form-check">
+                                    <input asp-for="EnableReviews" class="form-check-input" />
+                                    <label asp-for="EnableReviews" class="form-check-label"></label>
+                                    <div class="form-text">Cho phép khách hàng đánh giá sản phẩm</div>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input asp-for="AutoApproveReviews" class="form-check-input" />
+                                    <label asp-for="AutoApproveReviews" class="form-check-label"></label>
+                                    <div class="form-text">Tự động duyệt đánh giá mới</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Settings -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-server me-2"></i>Cài Đặt Hệ Thống
+                                </h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="DefaultPageSize" class="form-label"></label>
+                                    <input asp-for="DefaultPageSize" class="form-control" type="number" min="5" max="100" />
+                                    <span asp-validation-for="DefaultPageSize" class="text-danger"></span>
+                                    <div class="form-text">Số sản phẩm hiển thị mỗi trang (5-100)</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MaxFileUploadSize" class="form-label"></label>
+                                    <input asp-for="MaxFileUploadSize" class="form-control" type="number" min="1" max="50" />
+                                    <span asp-validation-for="MaxFileUploadSize" class="text-danger"></span>
+                                    <div class="form-text">Kích thước file tối đa cho phép upload (1-50 MB)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <button type="submit" class="btn btn-primary me-2">
+                                            <i class="fas fa-save me-1"></i>Lưu Cài Đặt
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                            <i class="fas fa-undo me-1"></i>Khôi Phục
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#backupModal">
+                                            <i class="fas fa-download me-1"></i>Sao Lưu Dữ Liệu
+                                        </button>
+                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#systemInfoModal">
+                                            <i class="fas fa-info-circle me-1"></i>Thông Tin Hệ Thống
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- System Info Modal -->
+<div class="modal fade" id="systemInfoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông Tin Hệ Thống</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Thông tin ứng dụng:</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Tên:</strong> Electronics Store</li>
+                            <li><strong>Phiên bản:</strong> 1.0.0</li>
+                            <li><strong>Framework:</strong> ASP.NET Core 8.0</li>
+                            <li><strong>Database:</strong> SQL Server</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Thông tin server:</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>OS:</strong> @Environment.OSVersion</li>
+                            <li><strong>Runtime:</strong> @Environment.Version</li>
+                            <li><strong>Thời gian khởi động:</strong> @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Backup Modal -->
+<div class="modal fade" id="backupModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sao Lưu Dữ Liệu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Chức năng sao lưu dữ liệu sẽ tạo một bản sao của toàn bộ cơ sở dữ liệu.</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Quá trình này có thể mất vài phút tùy thuộc vào kích thước dữ liệu.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-warning" onclick="startBackup()">
+                    <i class="fas fa-download me-1"></i>Bắt Đầu Sao Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function resetForm() {
+    if (confirm('Bạn có chắc chắn muốn khôi phục tất cả cài đặt về giá trị ban đầu?')) {
+        location.reload();
+    }
+}
+
+function startBackup() {
+    alert('Chức năng sao lưu sẽ được triển khai trong phiên bản tiếp theo.');
+    $('#backupModal').modal('hide');
+}
+</script>

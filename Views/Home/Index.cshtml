@@ -1,0 +1,260 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+    var featuredProducts = ViewBag.FeaturedProducts as List<ElectronicsStore.Models.Product>;
+    var newProducts = ViewBag.NewProducts as List<ElectronicsStore.Models.Product>;
+    var bestSellingProducts = ViewBag.BestSellingProducts as List<ElectronicsStore.Models.Product>;
+    var categories = ViewBag.Categories as List<ElectronicsStore.Models.Category>;
+    var brands = ViewBag.Brands as List<ElectronicsStore.Models.Brand>;
+}
+
+<div class="hero-section position-relative text-white py-5 mb-5" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://sfexpress.vn/wp-content/uploads/2021/06/linh-kien-dt.jpg" bis_skin_checked="1">
+    <div class="container" bis_skin_checked="1">
+        <div class="row align-items-center min-vh-50" bis_skin_checked="1">
+            <div class="col-lg-8" bis_skin_checked="1">
+                <h1 class="display-3 fw-bold mb-4">Cửa hàng Linh kiện Điện tử</h1>
+                <p class="lead mb-4 fs-5">Chuyên cung cấp linh kiện điện tử chất lượng cao cho các dự án IoT, Arduino, Raspberry Pi và ứng dụng công nghiệp. Hàng chính hãng, giá cạnh tranh, giao hàng nhanh chóng.</p>
+                <div class="d-flex gap-3 flex-wrap" bis_skin_checked="1">
+                    <a href="/Products" class="btn btn-warning btn-lg px-4 py-3" bis_skin_checked="1">
+                        <i class="fas fa-shopping-bag me-2"></i>Mua sắm ngay
+                    </a>
+                    <a href="/Products?categoryId=1" class="btn btn-outline-light btn-lg px-4 py-3" bis_skin_checked="1">
+                        <i class="fas fa-microchip me-2"></i>Vi điều khiển
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="row mt-5" bis_skin_checked="1">
+                    <div class="col-md-4 text-center" bis_skin_checked="1">
+                        <div class="d-flex align-items-center justify-content-center mb-2" bis_skin_checked="1">
+                            <i class="fas fa-box-open fa-2x text-warning me-3"></i>
+                            <div bis_skin_checked="1">
+                                <h3 class="mb-0">1000+</h3>
+                                <small>Sản phẩm</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center" bis_skin_checked="1">
+                        <div class="d-flex align-items-center justify-content-center mb-2" bis_skin_checked="1">
+                            <i class="fas fa-users fa-2x text-warning me-3"></i>
+                            <div bis_skin_checked="1">
+                                <h3 class="mb-0">5000+</h3>
+                                <small>Khách hàng</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center" bis_skin_checked="1">
+                        <div class="d-flex align-items-center justify-content-center mb-2" bis_skin_checked="1">
+                            <i class="fas fa-shipping-fast fa-2x text-warning me-3"></i>
+                            <div bis_skin_checked="1">
+                                <h3 class="mb-0">24h</h3>
+                                <small>Giao hàng</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Categories Section -->
+@if (categories != null && categories.Any())
+{
+    <div class="container mb-5">
+        <h2 class="text-center mb-4">Danh mục sản phẩm</h2>
+        <div class="row">
+            @foreach (var category in categories.Take(8))
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <a href="@Url.Action("Index", "Products", new { categoryId = category.Id })" class="text-decoration-none">
+                        <div class="card h-100 text-center category-card">
+                            <div class="card-body">
+                                <i class="fas fa-microchip fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">@category.Name</h5>
+                                <p class="card-text text-muted">@category.Description</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- Featured Products -->
+@if (featuredProducts != null && featuredProducts.Any())
+{
+    <div class="container mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-star text-warning me-2"></i>Sản phẩm nổi bật</h2>
+            <a href="@Url.Action("Index", "Products")" class="btn btn-outline-primary">Xem tất cả</a>
+        </div>
+        <div class="row">
+            @foreach (var product in featuredProducts.Take(4))
+            {
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100 product-card">
+                        <div class="card-img-top-container" style="height: 200px; overflow: hidden;">
+                            @if (!string.IsNullOrEmpty(product.MainImageUrl))
+                            {
+                                <img src="@product.MainImageUrl" class="card-img-top" alt="@product.Name" style="height: 100%; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                    <i class="fas fa-microchip fa-3x text-muted"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title">@product.Name</h6>
+                            <p class="text-muted small mb-1">SKU: @product.SKU</p>
+                            <p class="text-muted small mb-2">@product.Brand.Name</p>
+
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        @if (product.HasDiscount)
+                                        {
+                                            <span class="text-decoration-line-through text-muted small">@product.Price.ToString("N0") ₫</span><br>
+                                            <span class="text-danger fw-bold">@product.DisplayPrice.ToString("N0") ₫</span>
+                                            <span class="badge bg-danger ms-1">-@product.DiscountPercentage%</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fw-bold text-primary">@product.DisplayPrice.ToString("N0") ₫</span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <a href="@Url.Action("Details", "Products", new { id = product.Id })" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye"></i> Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- New Products -->
+@if (newProducts != null && newProducts.Any())
+{
+    <div class="container mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-plus-circle text-success me-2"></i>Sản phẩm mới</h2>
+            <a href="@Url.Action("Index", "Products")" class="btn btn-outline-success">Xem tất cả</a>
+        </div>
+        <div class="row">
+            @foreach (var product in newProducts.Take(4))
+            {
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100 product-card">
+                        <div class="position-relative">
+                            <div class="card-img-top-container" style="height: 200px; overflow: hidden;">
+                                @if (!string.IsNullOrEmpty(product.MainImageUrl))
+                                {
+                                    <img src="@product.MainImageUrl" class="card-img-top" alt="@product.Name" style="height: 100%; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                        <i class="fas fa-microchip fa-3x text-muted"></i>
+                                    </div>
+                                }
+                            </div>
+                            <span class="badge bg-success position-absolute top-0 end-0 m-2">Mới</span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title">@product.Name</h6>
+                            <p class="text-muted small mb-1">SKU: @product.SKU</p>
+                            <p class="text-muted small mb-2">@product.Brand.Name</p>
+
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-primary">@product.DisplayPrice.ToString("N0") ₫</span>
+                                </div>
+
+                                <div class="d-grid">
+                                    <a href="@Url.Action("Details", "Products", new { id = product.Id })" class="btn btn-success btn-sm">
+                                        <i class="fas fa-eye"></i> Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- Brands Section -->
+@if (brands != null && brands.Any())
+{
+    <div class="container mb-5">
+        <h2 class="text-center mb-4">Thương hiệu uy tín</h2>
+        <div class="row justify-content-center">
+            @foreach (var brand in brands.Take(8))
+            {
+                <div class="col-lg-3 col-md-4 col-6 mb-3">
+                    <a href="@Url.Action("Index", "Products", new { brandId = brand.Id })" class="text-decoration-none">
+                        <div class="card text-center brand-card">
+                            <div class="card-body">
+                                <h6 class="card-title mb-0">@brand.Name</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.category-card, .product-card, .brand-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.category-card:hover, .product-card:hover, .brand-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.brand-card {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.min-vh-50 {
+    min-height: 50vh;
+}
+
+.hero-section {
+    background-attachment: fixed;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+
+</style>

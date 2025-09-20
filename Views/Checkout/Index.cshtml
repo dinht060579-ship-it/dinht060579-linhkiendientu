@@ -1,0 +1,113 @@
+@model ElectronicsStore.Controllers.CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+<div class="container mt-4">
+    <h2>Thanh toán</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form id="checkout-form">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Thông tin giao hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Họ và tên *</label>
+                                <input type="text" class="form-control" name="ShippingAddress.FullName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Số điện thoại *</label>
+                                <input type="tel" class="form-control" name="ShippingAddress.Phone" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="ShippingAddress.Email">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Địa chỉ *</label>
+                            <input type="text" class="form-control" name="ShippingAddress.Street" placeholder="Số nhà, tên đường" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Thành phố *</label>
+                            <input type="text" class="form-control" name="ShippingAddress.City" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Phương thức thanh toán</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="PaymentMethod" value="COD" id="cod" checked>
+                            <label class="form-check-label" for="cod">
+                                Thanh toán khi nhận hàng (COD)
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="PaymentMethod" value="BankTransfer" id="bank">
+                            <label class="form-check-label" for="bank">
+                                Chuyển khoản ngân hàng
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Đơn hàng của bạn</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in Model.Cart.CartItems)
+                    {
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>@item.Product.Name x @item.Quantity</span>
+                            <span>@item.TotalPrice.ToString("N0") ₫</span>
+                        </div>
+                    }
+                    <hr>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tạm tính:</span>
+                        <span>@Model.Cart.TotalAmount.ToString("N0") ₫</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Phí vận chuyển:</span>
+                        <span>Miễn phí</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Tổng cộng:</strong>
+                        <strong>@Model.Cart.TotalAmount.ToString("N0") ₫</strong>
+                    </div>
+                    <button type="button" class="btn btn-primary w-100" onclick="placeOrder()">
+                        Đặt hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function placeOrder() {
+    var formData = $('#checkout-form').serialize();
+    
+    $.post('@Url.Action("PlaceOrder", "Checkout")', formData, function(response) {
+        if (response.success) {
+            window.location.href = '@Url.Action("Success", "Checkout")' + '?orderId=' + response.orderId;
+        } else {
+            alert(response.message);
+        }
+    });
+}
+</script>

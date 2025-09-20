@@ -1,0 +1,316 @@
+@model ElectronicsStore.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card primary">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-1">Tổng sản phẩm</h6>
+                    <h3 class="mb-0 text-primary">@Model.Stats.TotalProducts.ToString("N0")</h3>
+                </div>
+                <div class="text-primary">
+                    <i class="fas fa-microchip fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card success">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-1">Tổng đơn hàng</h6>
+                    <h3 class="mb-0 text-success">@Model.Stats.TotalOrders.ToString("N0")</h3>
+                </div>
+                <div class="text-success">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card warning">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-1">Khách hàng</h6>
+                    <h3 class="mb-0 text-warning">@Model.Stats.TotalCustomers.ToString("N0")</h3>
+                </div>
+                <div class="text-warning">
+                    <i class="fas fa-users fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card info">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-1">Doanh thu</h6>
+                    <h3 class="mb-0 text-info">@Model.Stats.TotalRevenue.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</h3>
+                </div>
+                <div class="text-info">
+                    <i class="fas fa-money-bill-wave fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Today & Month Stats -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card danger">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-1">Đơn chờ xử lý</h6>
+                    <h3 class="mb-0 text-danger">@Model.Stats.PendingOrders.ToString("N0")</h3>
+                </div>
+                <div class="text-danger">
+                    <i class="fas fa-clock fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card warning">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-1">Sản phẩm sắp hết</h6>
+                    <h3 class="mb-0 text-warning">@Model.Stats.LowStockProducts.ToString("N0")</h3>
+                </div>
+                <div class="text-warning">
+                    <i class="fas fa-exclamation-triangle fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card success">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-1">Doanh thu hôm nay</h6>
+                    <h3 class="mb-0 text-success">@Model.Stats.TodayRevenue.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</h3>
+                    <small class="text-muted">@Model.Stats.TodayOrders đơn hàng</small>
+                </div>
+                <div class="text-success">
+                    <i class="fas fa-calendar-day fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card primary">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h6 class="text-muted mb-1">Doanh thu tháng này</h6>
+                    <h3 class="mb-0 text-primary">@Model.Stats.MonthRevenue.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</h3>
+                    <small class="text-muted">@Model.Stats.MonthOrders đơn hàng</small>
+                </div>
+                <div class="text-primary">
+                    <i class="fas fa-calendar-alt fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row mb-4">
+    <div class="col-lg-8">
+        <div class="chart-container">
+            <h5 class="mb-3">
+                <i class="fas fa-chart-line me-2"></i>
+                Doanh thu 6 tháng gần đây
+            </h5>
+            <canvas id="revenueChart" height="100"></canvas>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="chart-container">
+            <h5 class="mb-3">
+                <i class="fas fa-chart-pie me-2"></i>
+                Thống kê danh mục
+            </h5>
+            <canvas id="categoryChart" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Tables Row -->
+<div class="row">
+    <div class="col-lg-8">
+        <div class="table-container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">
+                    <i class="fas fa-shopping-cart me-2"></i>
+                    Đơn hàng gần đây
+                </h5>
+                <a asp-action="Orders" class="btn btn-outline-primary btn-sm">
+                    Xem tất cả <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+            
+            @if (Model.RecentOrders.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Khách hàng</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.RecentOrders)
+                            {
+                                <tr>
+                                    <td><strong>#@order.Id</strong></td>
+                                    <td>
+                                        <div>@order.CustomerName</div>
+                                        <small class="text-muted">@order.CustomerEmail</small>
+                                    </td>
+                                    <td>@order.ItemCount sản phẩm</td>
+                                    <td class="fw-bold">@order.TotalAmount.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                    <td>
+                                        <span class="badge bg-@(order.Status == "Completed" ? "success" : order.Status == "Pending" ? "warning" : "secondary")">
+                                            @order.Status
+                                        </span>
+                                    </td>
+                                    <td>@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-inbox fa-3x mb-3"></i>
+                    <p>Chưa có đơn hàng nào</p>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="table-container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">
+                    <i class="fas fa-star me-2"></i>
+                    Sản phẩm bán chạy
+                </h5>
+                <a asp-action="Products" class="btn btn-outline-primary btn-sm">
+                    Xem tất cả <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+            
+            @if (Model.TopProducts.Any())
+            {
+                @foreach (var product in Model.TopProducts.Take(5))
+                {
+                    <div class="d-flex align-items-center mb-3 p-2 border rounded">
+                        <img src="@product.ImageUrl" alt="@product.Name" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">@product.Name</h6>
+                            <small class="text-muted">@product.CategoryName</small>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-success fw-bold">@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                <span class="badge bg-primary">@product.SoldCount bán</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-box fa-3x mb-3"></i>
+                    <p>Chưa có dữ liệu bán hàng</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.MonthlyRevenues.Select(m => m.Month))),
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: @Html.Raw(Json.Serialize(Model.MonthlyRevenues.Select(m => m.Revenue))),
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return new Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                }).format(value);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Category Chart
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        const categoryChart = new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.CategoryStats.Take(5).Select(c => c.CategoryName))),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.CategoryStats.Take(5).Select(c => c.Revenue))),
+                    backgroundColor: [
+                        '#007bff',
+                        '#28a745',
+                        '#ffc107',
+                        '#dc3545',
+                        '#17a2b8'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+}

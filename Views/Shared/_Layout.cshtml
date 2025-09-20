@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cửa hàng Linh kiện Điện tử</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ElectronicsStore.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-microchip me-2"></i>Cửa hàng Linh kiện Điện tử
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home me-1"></i>Trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Products" asp-action="Index">
+                                <i class="fas fa-microchip me-1"></i>Sản phẩm
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-list me-1"></i>Danh mục
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = 1 })">Vi điều khiển</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = 2 })">Cảm biến</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = 3 })">Linh kiện thụ động</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = 4 })">Bán dẫn</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = 5 })">Module giao tiếp</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = 6 })">Nguồn điện</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = 7 })">Màn hình</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = 8 })">Động cơ & Servo</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                        <form class="d-flex me-3" method="get" action="@Url.Action("Search", "Products")">
+                            <input class="form-control me-2" type="search" name="q" placeholder="Tìm kiếm sản phẩm..." style="width: 250px;">
+                            <button class="btn btn-outline-light" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Cart")">
+                                    <i class="fas fa-shopping-cart me-1"></i>Giỏ hàng <span class="badge bg-warning text-dark cart-count" id="cart-count">0</span>
+                                </a>
+                            </li>
+                            @if (User.Identity!.IsAuthenticated)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-user me-1"></i>@User.Identity.Name
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+                                            <i class="fas fa-user-edit me-2"></i>Thông tin cá nhân
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#">
+                                            <i class="fas fa-shopping-bag me-2"></i>Đơn hàng của tôi
+                                        </a></li>
+                                        @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                                        {
+                                            <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index">
+                                                <i class="fas fa-cogs me-2"></i>Quản trị viên
+                                            </a></li>
+                                        }
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                        <i class="fas fa-sign-in-alt me-1"></i>Đăng nhập
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Account" asp-action="Register">
+                                        <i class="fas fa-user-plus me-1"></i>Đăng ký
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="fas fa-microchip me-2"></i>Cửa hàng Linh kiện Điện tử</h5>
+                    <p>Chuyên cung cấp linh kiện điện tử chất lượng cao cho các dự án IoT, Arduino, Raspberry Pi và các ứng dụng công nghiệp.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Liên hệ</h5>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>123 Đường ABC, Quận XYZ, TP.HCM</p>
+                    <p><i class="fas fa-phone me-2"></i>0123 456 789</p>
+                    <p><i class="fas fa-envelope me-2"></i>info@electronics-store.vn</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Danh mục sản phẩm</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="@Url.Action("Index", "Products", new { categoryId = 1 })" class="text-light text-decoration-none">Vi điều khiển</a></li>
+                        <li><a href="@Url.Action("Index", "Products", new { categoryId = 2 })" class="text-light text-decoration-none">Cảm biến</a></li>
+                        <li><a href="@Url.Action("Index", "Products", new { categoryId = 3 })" class="text-light text-decoration-none">Linh kiện thụ động</a></li>
+                        <li><a href="@Url.Action("Index", "Products", new { categoryId = 4 })" class="text-light text-decoration-none">Bán dẫn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p>Sinh viên: Nguyễn Hoàng Thiên Di</p>
+                <p>MSSV: 170123608</p>
+                <p>Email: dinht060579@sv-onuni.edu.vn</p>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function() {
+            updateCartCount();
+        });
+        
+        function updateCartCount() {
+            $.get('@Url.Action("GetCartCount", "Cart")', function(response) {
+                $('.cart-count').text(response.count);
+            });
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

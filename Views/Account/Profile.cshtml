@@ -1,0 +1,160 @@
+@model ElectronicsStore.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Thông tin tài khoản";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-circle me-2"></i>
+                        Thông tin tài khoản
+                    </h4>
+                </div>
+                <div class="card-body">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-action="Profile" method="post">
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="FullName" class="form-label">
+                                        <i class="fas fa-user me-1"></i>
+                                        @Html.DisplayNameFor(m => m.FullName)
+                                    </label>
+                                    <input asp-for="FullName" class="form-control" placeholder="Nhập họ tên đầy đủ" />
+                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label">
+                                        <i class="fas fa-envelope me-1"></i>
+                                        @Html.DisplayNameFor(m => m.Email)
+                                    </label>
+                                    <input asp-for="Email" class="form-control" readonly style="background-color: #f8f9fa;" />
+                                    <small class="text-muted">Email không thể thay đổi</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="PhoneNumber" class="form-label">
+                                        <i class="fas fa-phone me-1"></i>
+                                        @Html.DisplayNameFor(m => m.PhoneNumber)
+                                    </label>
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Address" class="form-label">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        @Html.DisplayNameFor(m => m.Address)
+                                    </label>
+                                    <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-flex gap-3">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>
+                                        Cập nhật thông tin
+                                    </button>
+                                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        Quay lại trang chủ
+                                    </a>
+                                    <a asp-controller="Account" asp-action="ChangePassword" class="btn btn-outline-warning">
+                                        <i class="fas fa-key me-2"></i>
+                                        Đổi mật khẩu
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Thống kê tài khoản -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Thống kê tài khoản
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100">
+                                <i class="fas fa-shopping-cart fa-2x text-primary mb-2"></i>
+                                <h4 class="text-primary">0</h4>
+                                <p class="text-muted mb-0">Đơn hàng</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100">
+                                <i class="fas fa-microchip fa-2x text-success mb-2"></i>
+                                <h4 class="text-success">0</h4>
+                                <p class="text-muted mb-0">Sản phẩm đã mua</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100">
+                                <i class="fas fa-money-bill-wave fa-2x text-warning mb-2"></i>
+                                <h4 class="text-warning">0 VNĐ</h4>
+                                <p class="text-muted mb-0">Tổng chi tiêu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hoạt động gần đây -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history me-2"></i>
+                        Hoạt động gần đây
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-inbox fa-3x mb-3"></i>
+                        <p>Chưa có hoạt động nào</p>
+                        <a asp-controller="Products" asp-action="Index" class="btn btn-primary">
+                            <i class="fas fa-shopping-bag me-2"></i>
+                            Bắt đầu mua sắm
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Test Cart";
+}
+
+<div class="container mt-4">
+    <h2>Test Chức năng Giỏ hàng</h2>
+    
+    @Html.AntiForgeryToken()
+    
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-primary" onclick="testAddToCart(1)">
+                Test thêm sản phẩm ID 1
+            </button>
+        </div>
+        <div class="col-md-6">
+            <div id="result"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+function testAddToCart(productId) {
+    var token = $('input[name="__RequestVerificationToken"]').val();
+    
+    $.ajax({
+        url: '@Url.Action("AddToCart", "Cart")',
+        type: 'POST',
+        data: {
+            productId: productId,
+            quantity: 1,
+            __RequestVerificationToken: token
+        },
+        success: function(response) {
+            $('#result').html('<div class="alert alert-success">' + JSON.stringify(response) + '</div>');
+        },
+        error: function(xhr, status, error) {
+            $('#result').html('<div class="alert alert-danger">Error: ' + error + '<br>Status: ' + status + '<br>Response: ' + xhr.responseText + '</div>');
+        }
+    });
+}
+</script>
